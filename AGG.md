@@ -18,7 +18,8 @@ Contents:
     * [GPU Jobs](#gpu-jobs)
       * [Hello CUDA](#hello-cuda)
       * [Hello OpenACC](#hello-openacc)
-# Introduction
+
+
 <a name="main"></a>
 [SDSC HPC Training Group](https://www.sdsc.edu/education_and_training/training_hpc.html)
 
