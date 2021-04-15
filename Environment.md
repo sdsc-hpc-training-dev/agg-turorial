@@ -1,69 +1,75 @@
 ---
-description: Customizing Your User Environment
+sort: 2
 ---
 
-# Environment Modules
-
+#  Environment Modules: Customizing Your User Environment
 The Environment Modules package provides for dynamic modification of your shell environment. Module commands set, change, or delete environment variables, typically in support of a particular application. They also let the user choose between different versions of the same software or different combinations of related codes. See the [Expanse User Guide](https://www.sdsc.edu/support/user_guides/expanse.html#modules).
 
-## Introduction to Lmod
+In this Section:
+* [Introduction to the Lua Lmod Module System](#module-lmod-intro)
+* [Modules: Popular Lmod Commands](module-commands)
+* [Load and Check Modules and Environment](#load-and-check-module-env)
 
-Expanse uses [Lmod](https://lmod.readthedocs.io/en/latest/010_user.html), a Lua based module system. Users setup custom environments by loading available modules into the shell environment, including needed compilers and libraries and the batch scheduler.
+<!----
+* [Module Error: command not found](#module-error)
+---->
 
-### What's the same as Comet:
+##  Introduction to the Lua Lmod Module System<a name="module-lmod-intro"></a>
+* Expanse uses Lmod, a Lua based module system.
+   * See: [https://lmod.readthedocs.io/en/latest/010_user.html](https://lmod.readthedocs.io/en/latest/010_user.html)
+* Users setup custom environments by loading available modules into the shell environment, including needed compilers and libraries and the batch scheduler.
+* What’s the same as Comet:
+  * Dynamic modification of your shell environment
+  * User can set, change, or delete environment variables
+  * User chooses between different versions of the same software or different combinations of related codes.
+* Modules: What’s Different?
+  * *Users will need to load the scheduler (e.g. Slurm)*
+  * Depending on which hardware users are working on, *users will need to load either the ```gpu``` or ```cpu``` modules*.
+  * Users will not see all available modules when they run command "module available" without loading a compiler.
+  * Use the command "module spider" option to see if a particular package exists and can be loaded, run command
+      * module spider <package>
+      * module keywords <term>
+  * For additional details, and to identify module dependencies modules, use the command
+      * module spider <application_name>
+  * The module paths are different for the CPU and GPU nodes. Users can enable the paths by loading the following modules:               
+      * module load cpu  (for cpu nodes)
+      * module load gpu  (for gpu nodes)     
+      * note: avoid loading both modules
 
-* Dynamic modification of your shell environment
-* User can set, change, or delete environment variables
-* User chooses between different versions of the same software or different combinations of related codes.
+##  Modules: Popular Lmod Commands<a name="module-commands"></a>
 
-### What's Different?
-
-* Users will need to load the scheduler \(e.g. Slurm\)
-* Depending on which hardware users are working on, users will need to load either the `gpu` or `cpu` modules.
-* Users will not see all available modules when they run command "module available" without loading a compiler.
-* Use the command "module spider" option to see if a particular package exists and can be loaded, run command
-  * `module spider`
-  * `module keywords`
-* For additional details, and to identify module dependencies modules, use the command
-  * `module spider`
-* The module paths are different for the CPU and GPU nodes. Users can enable the paths by loading the following modules:            
-  * `module load cpu`  \(for cpu nodes\)
-  * `module load gpu`  \(for gpu nodes\)     
-
-#### Avoid loading both modules
-
-## Popular Lmod Commands
-
-Here are some common module commands and their descriptions
+Here are some common module commands and their descriptions:
 
 | Lmod Command | Description |
-| :--- | :--- |
-| `module purge` | Remove all modules that are currently loaded |
-| `module list` | List the modules that are currently loaded |
-| `module avail` | List the modules that are available in environment |
-| `module spider` | List of the modules and extensions currently available |
-| `module display` | Show the environment variables used by  and how they are affected |
-| `module unload` | Remove  from the environment |
-| `module load` | Load  into the environment |
-| `module swap` | Replace  with  in the environment |
-| `module save` | Save the current list of modules to "name" collection. |
-| `module savelist` | List of saved module collections. |
-| `module describe` | Describe the contents of a module collection. |
-| `module help` | Get a list of all the commands that module knows about do: |
+|:--- | :--- |
+|module purge | Remove all modules that are currently loaded|
+|module list | List the modules that are currently loaded|
+|module avail | List the modules that are available in environment|
+|module spider | List of the modules and extensions currently available|
+|module display <module_name> | Show the environment variables used by <module name> and how they are affected|
+|module unload <module name> | Remove <module name> from the environment|
+|module load <module name> | Load <module name> into the environment|
+|module swap <module one> <module two> | Replace <module one> with <module two> in the environment|
+|module  save <name> | Save the current list of modules to "name" collection. |
+| savelist | List of saved module collections. |
+|  describe  <name> | Describe the contents of a module collection. |
+|module help | Get a list of all the commands that module knows about do:
 
-Lmod commands support _short-hand_ notation, for example:
+Lmod commands support *short-hand* notation, for example:
 
-`ml foo` == `module load foo`
+```
+   ml foo == module load foo
+   ml -bar”  == module unload bar
+```
+*SDSC Guidance:   add module calls to your environment and batch scripts*
 
-`foo ml -bar` == `module unload bar`
 
-SDSC Guidance: add module calls to your environment and batch scripts
 
-#### Examples
+<b> A few module command examples:</b>
 
 * Default environment for a new user/new login: `list`, `li`
 
-```text
+```
 (base) [user@login01 expanse-101]$ module list
 Currently Loaded Modules:
 1) shared   2) slurm/expanse/20.02.3   3) cpu/0.15.4   4) DefaultModules
@@ -71,7 +77,7 @@ Currently Loaded Modules:
 
 * List available modules:  `available`, `avail`, `av`
 
-```text
+```
 $ module av
 [user@expanse-ln3:~] module av
 (base) [user@login01 expanse-101]$ module available
@@ -107,13 +113,15 @@ $ module av
   Where:
    L:  Module is loaded
    D:  Default Module
+
 ```
 
-Module defaults are chosen based on Find First Rules due to Name/Version/Version modules found in the module tree. See [https://lmod.readthedocs.io/en/latest/060\_locating.html](https://lmod.readthedocs.io/en/latest/060_locating.html) for details.
+*Note:* Module defaults are chosen based on Find First Rules due to Name/Version/Version modules found in the module tree.
+See https://lmod.readthedocs.io/en/latest/060_locating.html for details.
 
-Use `module spider` to find all possible modules and extensions.
+Use ```module spider``` to find all possible modules and extensions.
 
-```text
+```
 (base) [user@login02 ~]$ module spider MPI
 -------------------------------------------------------------------------------------
   intel-mpi: intel-mpi/2019.8.254
@@ -147,34 +155,33 @@ Use `module spider` to find all possible modules and extensions.
     You will need to load all module(s) on any one of the lines below before the "openmpi/gcc/64/1.10.7" module is available to load.
       shared
     Help:
-        Adds OpenMPI to your environment variables,
+        Adds OpenMPI to your environment variables,      
 ```
 
-## Environment Checking
-
+##  <a name="load-and-check-module-env"></a>Load and Check Modules and Environment
 In this example, we will add the Slurm library, and and verify that it is in your environment
+* Check  module environment after loggin on to the system:
 
-* Check module environment after loggin on to the system:
-
-```text
+```
 (base) [user@login01 ~]$ module li
 
 Currently Loaded Modules:
   1) shared   2) slurm/expanse/20.02.3   3) cpu/0.15.4   4) DefaultModules
 ```
 
-* Note that Slurm \(the cluster resource manager\) is not in the environment.
+* Note that Slurm (the cluster resource manager) is not in the environment.
+Check environment looking for Slurm commands
 
-  Check environment looking for Slurm commands
 
-```text
+```
 (base) [user@login01 ~]$ which squeue
 /usr/bin/which: no squeue in (/home/user/miniconda3/bin/conda:/home/user/miniconda3/bin:/home/user/miniconda3/condabin:/usr/local/bin:/usr/bin:/usr/local/sbin:/usr/sbin:/opt/dell/srvadmin/bin:/home/user/.local/bin:/home/user/bin)
 ```
 
 * Since Slurm commands do not exist,  we need to load that module:
 
-```text
+
+```
 (base) [user@login01 ~]$ module load slurm
 (base) [user@login01 ~]$ which squeue
 /cm/shared/apps/Slurm/current/bin/squeue
@@ -182,7 +189,8 @@ Currently Loaded Modules:
 
 * Display loaded module details:
 
-```text
+
+```
 (base) [user@login02 ~]$ module display Slurm
 -------------------------------------------------------------------------------------
    /cm/local/modulefiles/slurm/expanse/20.02.3:
@@ -203,10 +211,10 @@ help([[ Adds Slurm to your environment
 ```
 
 Once you have loaded the modules, you can check the system variables that are available for you to use.
+* To see all variable, run the <b>`env`</b> command. Typically, you will see more than 60 lines containing information such as your login name, shell, your home directory:
 
-* To see all variable, run the **`env`** command. Typically, you will see more than 60 lines containing information such as your login name, shell, your home directory:
 
-```text
+```
 [user@expanse-ln3 IBRUN]$ env
 CONDA_EXE=/home/user/miniconda3/bin/conda
 __LMOD_REF_COUNT_PATH=/cm/shared/apps/Slurm/current/sbin:1;/cm/shared/apps/Slurm/current/bin:1;/home/user/miniconda3/bin/conda:1;/home/user/miniconda3/bin:1;/home/user/miniconda3/condabin:1;/usr/local/bin:1;/usr/bin:1;/usr/local/sbin:1;/usr/sbin:1;/opt/dell/srvadmin/bin:1;/home/user/.local/bin:1;/home/user/bin:1
@@ -231,7 +239,7 @@ CONDA_DEFAULT_ENV=base
 
 To see the value for any of these variables, use the `echo` command. In this example we show how to activate your miniconda environment so you can run Jupyter Notebooks:
 
-```text
+```
 (base) [user@login02 ~]$ echo $CONDA_PYTHON_EXE
 [user@login02 ~]$
 [user@login02 ~]$ conda activate
@@ -245,49 +253,47 @@ To see the value for any of these variables, use the `echo` command. In this exa
 (base) [user@login02 ~]$
 ```
 
-## Loading Modules at Login
+##  Loading Modules at Login <a name="module-login-load"></a>
+You can override, and add to the standard set of login modules in two ways.
+1. The first is adding module commands to your personal startup files.
+2. The second way is through the “module save” command.
+*Note: make sure that you always want the module loaded at login*
 
-You can override, and add to the standard set of login modules in two ways. 
+For Bash:  put the following block into your ```~/.bash_profile``` file:
 
-1. Adding module commands to your personal startup files
-2. Using `module save` command
-
-Make sure that you always want the module loaded at login
-
-For Bash: put the following block into your `~/.bash_profile` file:
-
-```bash
+```
 if [ -f ~/.bashrc ]; then
        . ~/.bashrc
 fi
 ```
 
-Place the following in your `~/.bashrc` file:
+Place the following in your ```~/.bashrc``` file:
 
-```text
-# Place module commands here
-# module load hdf5
+```
+  Place  module commands here
+  module load hdf5
+
 ```
 
-* First edit your `.bashrc` and `.bash_profile` files:
+* First edit your ```.bashrc``` and ```.bash_profile``` files:
 
-```text
+```
 [user@login02 ~]$ cat .bash_profile
-# .bash_profile
-# Get the aliases and functions
+  .bash_profile
+  Get the aliases and functions
 if [ -f ~/.bashrc ]; then
 . ~/.bashrc
 fi
 [SNIP]
 [user@login01 ~]$
 [user@login02 ~]$ cat .bashrc
-# .bashrc
-# Source global definitions
+  .bashrc
+  Source global definitions
 if [ -f /etc/bashrc ]; then
 . /etc/bashrc
 fi
 
-# Place any module commands here
+  Place any module commands here
 module load hdf5
 
 [SNIP]
@@ -295,7 +301,7 @@ module load hdf5
 
 * Next LOGOUT and LOG BACK IN:
 
-```text
+```
 (base) [user@login02 ~]$ env | grep Slurm
 [snip]
 MANPATH=/cm/shared/apps/Slurm/current/man:/usr/share/lmod/lmod/share/man:/usr/local/share/man:/usr/share/man:/cm/local/apps/environment-modules/current/share/man
@@ -305,23 +311,21 @@ PATH=/cm/shared/apps/Slurm/current/sbin:/cm/shared/apps/Slurm/current/bin:/home/
 /cm/shared/apps/Slurm/current/bin/squeue
 ```
 
-## Troubleshooting
-
-### Lmod warning "rebuild your saved collection"
-
-Lmod allows a user to save a bundle of modules as a collection using module save and module restore. This enables you to quickly get the same list of modules loaded if you tend to use the same modules over and over. With a new module scheme came a different system MODULEPATH. For this reason, if you have some module collections saved, you will experience the following warning: “Lmod Warning: The system MODULEPATH has changed: please rebuild your saved collection.” To solve this you need to remove your old collections and create them again.
+##  Troubleshooting: Lmod warning “rebuild your saved collection”<a name="lmod-warn-rebuild"></a>
+Lmod allows a user to save a bundle of modules as a collection using module save <collection_name> and module restore <collection_name>. This enables you to quickly get the same list of modules loaded if you tend to use the same modules over and over. With a new module scheme came a different system MODULEPATH. For this reason, if you have some module collections saved, you will experience the following warning: “Lmod Warning: The system MODULEPATH has changed: please rebuild your saved collection.” To solve this you need to remove your old collections and create them again.
 
 * Too see the list of module collections that you currently have:
 
-```text
+```
 [mthomas@login02 ~]$ module savelist
 Named collection list :
   1) default  2) hdf5_env
+
 ```
 
 * To remove or disable a saved collection:
 
-```text
+```
 [mthomas@login02 ~]$ module disable hdf5_env
 Disabling hdf5_env collection by renaming with a "~"
 [mthomas@login02 ~]$ module savelist
@@ -330,13 +334,12 @@ Named collection list :
 [mthomas@login02 ~]$
 ```
 
-### Module Error
+##  Troubleshooting:  Module Error<a name="module-error"></a>
 
-Sometimes this error is encountered when switching from one shell to another or attempting to run the module command from within a shell script or batch job. The module command may not be inherited between the shells. To keep this from happening, execute the following command:
+Sometimes this error is encountered when switching from one shell to another or attempting to run the module command from within a shell script or batch job. The module command may not be inherited between the shells.  To keep this from happening, execute the following command:
 
-```text
+
+```
 [expanse-ln3:~]source /etc/profile.d/modules.sh
 ```
-
-OR add this command to your shell script \(including Slurm batch scripts\)
-
+OR add this command to your shell script (including Slurm batch scripts)
