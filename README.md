@@ -1,3 +1,6 @@
+---
+sort: 1
+---
 # Expanse 101 (Refactored)
 ## Introduction to Running Jobs on the Expanse Supercomputer
 
