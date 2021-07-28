@@ -1,5 +1,5 @@
 ---
-sort: 1
+sort: 3
 ---
 # Expanse 101 (Refactored)
 ## Introduction to Running Jobs on the Expanse Supercomputer
