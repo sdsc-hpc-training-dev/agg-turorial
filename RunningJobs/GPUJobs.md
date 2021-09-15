@@ -1,5 +1,5 @@
 ---
-sort: 3
+sort: 2
 ---
 
 #  Compiling and Running GPU Jobs <a name="comp-run-gpu"></a>
