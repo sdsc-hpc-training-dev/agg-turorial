@@ -2,8 +2,7 @@
 sort: 7
 ---
 
-# 7. Running Jobs - 
-#  Running Jobs on Expanse
+# Running Jobs on Expanse
 
 In this Section:
 * [Parallel Models](#run-jobs-par-models)
