@@ -2,7 +2,7 @@
 sort: 7
 ---
 
-# Running Jobs on Expanse
+# 7. Running Jobs on Expanse
 
 In this Section:
 * [Parallel Models](#run-jobs-par-models)
@@ -17,7 +17,7 @@ In this Section:
 ##  Parallel Models <a name="run-jobs-par-models"></a>
 ###  Parallel Models: Distributed Memory
 
-<img src="images/distr-memory.png" alt="Distributed Memory architecture" width="300px" />
+<img src="../images/distr-memory.png" alt="Distributed Memory architecture" width="300px" />
 
 * Programs that run asynchronously, pass messages for communication and coordination between resources.
 * Examples include: SOA-based systems, massively multiplayer online games, peer-to-peer apps.
@@ -26,7 +26,7 @@ In this Section:
 
 ###  Parallel Models: Shared Memory
 
-<img src="images/shared-memory.png" alt="Shared Memory architecture" width="300px" />
+<img src="../images/shared-memory.png" alt="Shared Memory architecture" width="300px" />
 
 * CPUs all share same localized memory (SHMEM)
    * Coordination and communication between tasks via interprocessor communication (IPC) or virtual memory mappings.
