@@ -6,6 +6,7 @@ sort: 3
 
 ## For more training event and information, see:
 [SDSC Advanced User Training](https://www.sdsc.edu/education_and_training/training_hpc.html)
+
 Document last updated: 02/16/2022
 
 <hr>
