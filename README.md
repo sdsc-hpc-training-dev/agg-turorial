@@ -17,7 +17,7 @@ expanse.sdsc.edu.
 
 # Misc Notes/Updates:
 * This tutorial is based on information found in the [Expanse User Guide](https://www.sdsc.edu/support/user_guides/expanse.html). Check the user guide for the most current and updated information.
-* You must have a expanse account in order to access the system.
+* You must have an expanse account in order to access the system.
   * To obtain a trial account:
       [Expanse trial account](https://portal.xsede.org/allocations/startup#rapidaccess-trial)
 *  You should be familiar with running basic Unix commands on and HPC system: see the
